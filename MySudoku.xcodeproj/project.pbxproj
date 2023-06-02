@@ -7,18 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		575D5A3A2A2A4CEB00A9BC22 /* MyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575D5A392A2A4CEB00A9BC22 /* MyColors.swift */; };
 		5794BB9E2A1FE7A900037CE6 /* MySudokuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BB9D2A1FE7A900037CE6 /* MySudokuApp.swift */; };
 		5794BBA02A1FE7A900037CE6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BB9F2A1FE7A900037CE6 /* ContentView.swift */; };
 		5794BBA22A1FE7AA00037CE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5794BBA12A1FE7AA00037CE6 /* Assets.xcassets */; };
 		5794BBA52A1FE7AA00037CE6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5794BBA42A1FE7AA00037CE6 /* Preview Assets.xcassets */; };
+		5794BBAC2A2006CD00037CE6 /* BoardData.data in Resources */ = {isa = PBXBuildFile; fileRef = 5794BBAB2A2006CD00037CE6 /* BoardData.data */; };
+		5794BBAE2A20086600037CE6 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBAD2A20086600037CE6 /* Board.swift */; };
+		5794BBB02A20191500037CE6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBAF2A20191500037CE6 /* ModelData.swift */; };
+		5794BBBD2A2684AC00037CE6 /* BoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBBC2A2684AC00037CE6 /* BoardTests.swift */; };
+		5794BBC42A26A3CF00037CE6 /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5794BBBE2A2684AC00037CE6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5794BB922A1FE7A900037CE6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5794BB992A1FE7A900037CE6;
+			remoteInfo = MySudoku;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		575D5A392A2A4CEB00A9BC22 /* MyColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyColors.swift; sourceTree = "<group>"; };
 		5794BB9A2A1FE7A900037CE6 /* MySudoku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySudoku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5794BB9D2A1FE7A900037CE6 /* MySudokuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySudokuApp.swift; sourceTree = "<group>"; };
 		5794BB9F2A1FE7A900037CE6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5794BBA12A1FE7AA00037CE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5794BBA42A1FE7AA00037CE6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5794BBAB2A2006CD00037CE6 /* BoardData.data */ = {isa = PBXFileReference; lastKnownFileType = text; path = BoardData.data; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.json; };
+		5794BBAD2A20086600037CE6 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		5794BBAF2A20191500037CE6 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		5794BBBA2A2684AC00037CE6 /* MySudokuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MySudokuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5794BBBC2A2684AC00037CE6 /* BoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTests.swift; sourceTree = "<group>"; };
+		5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,13 +52,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5794BBB72A2684AC00037CE6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		575D5A3B2A2A4E3500A9BC22 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5794BB9F2A1FE7A900037CE6 /* ContentView.swift */,
+				5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		5794BB912A1FE7A900037CE6 = {
 			isa = PBXGroup;
 			children = (
 				5794BB9C2A1FE7A900037CE6 /* MySudoku */,
+				5794BBBB2A2684AC00037CE6 /* MySudokuTests */,
 				5794BB9B2A1FE7A900037CE6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				5794BB9A2A1FE7A900037CE6 /* MySudoku.app */,
+				5794BBBA2A2684AC00037CE6 /* MySudokuTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -52,8 +93,12 @@
 			isa = PBXGroup;
 			children = (
 				5794BB9D2A1FE7A900037CE6 /* MySudokuApp.swift */,
-				5794BB9F2A1FE7A900037CE6 /* ContentView.swift */,
 				5794BBA12A1FE7AA00037CE6 /* Assets.xcassets */,
+				575D5A392A2A4CEB00A9BC22 /* MyColors.swift */,
+				5794BBAF2A20191500037CE6 /* ModelData.swift */,
+				575D5A3B2A2A4E3500A9BC22 /* Views */,
+				5794BBAB2A2006CD00037CE6 /* BoardData.data */,
+				5794BBAD2A20086600037CE6 /* Board.swift */,
 				5794BBA32A1FE7AA00037CE6 /* Preview Content */,
 			);
 			path = MySudoku;
@@ -65,6 +110,14 @@
 				5794BBA42A1FE7AA00037CE6 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		5794BBBB2A2684AC00037CE6 /* MySudokuTests */ = {
+			isa = PBXGroup;
+			children = (
+				5794BBBC2A2684AC00037CE6 /* BoardTests.swift */,
+			);
+			path = MySudokuTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +140,24 @@
 			productReference = 5794BB9A2A1FE7A900037CE6 /* MySudoku.app */;
 			productType = "com.apple.product-type.application";
 		};
+		5794BBB92A2684AC00037CE6 /* MySudokuTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5794BBC02A2684AC00037CE6 /* Build configuration list for PBXNativeTarget "MySudokuTests" */;
+			buildPhases = (
+				5794BBB62A2684AC00037CE6 /* Sources */,
+				5794BBB72A2684AC00037CE6 /* Frameworks */,
+				5794BBB82A2684AC00037CE6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5794BBBF2A2684AC00037CE6 /* PBXTargetDependency */,
+			);
+			name = MySudokuTests;
+			productName = MySudokuTests;
+			productReference = 5794BBBA2A2684AC00037CE6 /* MySudokuTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -99,6 +170,10 @@
 				TargetAttributes = {
 					5794BB992A1FE7A900037CE6 = {
 						CreatedOnToolsVersion = 14.3;
+					};
+					5794BBB92A2684AC00037CE6 = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = 5794BB992A1FE7A900037CE6;
 					};
 				};
 			};
@@ -116,6 +191,7 @@
 			projectRoot = "";
 			targets = (
 				5794BB992A1FE7A900037CE6 /* MySudoku */,
+				5794BBB92A2684AC00037CE6 /* MySudokuTests */,
 			);
 		};
 /* End PBXProject section */
@@ -126,7 +202,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5794BBA52A1FE7AA00037CE6 /* Preview Assets.xcassets in Resources */,
+				5794BBAC2A2006CD00037CE6 /* BoardData.data in Resources */,
 				5794BBA22A1FE7AA00037CE6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5794BBB82A2684AC00037CE6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,12 +221,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5794BBC42A26A3CF00037CE6 /* PuzzleView.swift in Sources */,
+				575D5A3A2A2A4CEB00A9BC22 /* MyColors.swift in Sources */,
 				5794BBA02A1FE7A900037CE6 /* ContentView.swift in Sources */,
+				5794BBB02A20191500037CE6 /* ModelData.swift in Sources */,
 				5794BB9E2A1FE7A900037CE6 /* MySudokuApp.swift in Sources */,
+				5794BBAE2A20086600037CE6 /* Board.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5794BBB62A2684AC00037CE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5794BBBD2A2684AC00037CE6 /* BoardTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5794BBBF2A2684AC00037CE6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5794BB992A1FE7A900037CE6 /* MySudoku */;
+			targetProxy = 5794BBBE2A2684AC00037CE6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5794BBA62A1FE7AA00037CE6 /* Debug */ = {
@@ -317,6 +421,42 @@
 			};
 			name = Release;
 		};
+		5794BBC12A2684AC00037CE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LJ29NP93NZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thiggs.MySudokuTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MySudoku.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MySudoku";
+			};
+			name = Debug;
+		};
+		5794BBC22A2684AC00037CE6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LJ29NP93NZ;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.thiggs.MySudokuTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MySudoku.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MySudoku";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -334,6 +474,15 @@
 			buildConfigurations = (
 				5794BBA92A1FE7AA00037CE6 /* Debug */,
 				5794BBAA2A1FE7AA00037CE6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5794BBC02A2684AC00037CE6 /* Build configuration list for PBXNativeTarget "MySudokuTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5794BBC12A2684AC00037CE6 /* Debug */,
+				5794BBC22A2684AC00037CE6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
