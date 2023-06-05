@@ -72,7 +72,7 @@ struct PuzzleView: View {
                                                     ForEach(0..<3) { k in
                                                         GridRow {
                                                             ForEach(0..<3) { l in
-                                                                if candidates[i][j].contains("\(k * 3 + l + 1)") {
+                                                                if candidates[i][j].contains("\(k * 3 + l + 1)") && modelData.board.isSafe(i: i, j: j, n: k * 3 + l + 1) {
                                                                     Text("\(k * 3 + l + 1)")
                                                                         .font(.system(size: 10))
                                                                         .foregroundColor(.gray)
@@ -114,6 +114,7 @@ struct PuzzleView: View {
                             .font(.system(size: 28))
                             .padding([.vertical], 1)
                             .padding([.top], 4)
+                            .frame(height: 44)
                         Text("Pencil")
                             .foregroundColor(pencilColor)
                             .font(.system(size: 12))
@@ -121,6 +122,43 @@ struct PuzzleView: View {
                             .padding([.horizontal], 4)
                     }
                     .background(noteMode ? Color("SelectedBackground") : nil)
+                    .cornerRadius(10)
+
+                }
+                Button {
+                    guard let safeSelectedBox = selectedBox else {
+                        let impact = UIImpactFeedbackGenerator(style: .rigid)
+                        impact.impactOccurred()
+                        return
+                    }
+                    let (i, j) = (safeSelectedBox.row, safeSelectedBox.col)
+                    if fills[i][j] != 0 {
+                        let impact = UIImpactFeedbackGenerator(style: .rigid)
+                        impact.impactOccurred()
+                        return
+                    }
+                    modelData.board.fills[i][j] = solution[i][j]
+                    Task {
+                        do {
+                            try await modelData.save()
+                        } catch {
+                            print("there was an issue saving hint")
+                        }
+                    }
+                } label: {
+                    VStack {
+                        Image(systemName: "lightbulb")
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 28))
+                            .padding([.vertical], 1)
+                            .padding([.top], 4)
+                            .frame(height: 44)
+                        Text("Hint")
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 12))
+                            .padding([.bottom], 8)
+                            .padding([.horizontal], 4)
+                    }
                     .cornerRadius(10)
 
                 }
@@ -134,15 +172,15 @@ struct PuzzleView: View {
                             return
                         }
                         if noteMode {
-                            if !modelData.board.isSafe(i: safeSelectedBox.row, j: safeSelectedBox.col, n: i) {
-                                let impact = UIImpactFeedbackGenerator(style: .rigid)
-                                impact.impactOccurred()
-                                return
-                            }
                             let prevNotes = candidates[safeSelectedBox.row][safeSelectedBox.col]
                             if prevNotes.contains("\(i)") {
-                                modelData.board.candidates[safeSelectedBox.row][safeSelectedBox.col] = prevNotes.filter {"\($0)" == "\(i)"}
+                                modelData.board.candidates[safeSelectedBox.row][safeSelectedBox.col] = prevNotes.filter {"\($0)" != "\(i)"}
                             } else {
+                                if !modelData.board.isSafe(i: safeSelectedBox.row, j: safeSelectedBox.col, n: i) {
+                                    let impact = UIImpactFeedbackGenerator(style: .rigid)
+                                    impact.impactOccurred()
+                                    return
+                                }
                                 modelData.board.candidates[safeSelectedBox.row][safeSelectedBox.col] = prevNotes + "\(i)"
                             }
                             Task {
@@ -150,7 +188,7 @@ struct PuzzleView: View {
                                     try await modelData.save()
                                 } catch {
                                     print("something went wrong saving")
-                                    modelData.board.fills[safeSelectedBox.row][safeSelectedBox.col] = 0
+                                    modelData.board.candidates[safeSelectedBox.row][safeSelectedBox.col] = prevNotes
                                 }
                             }
                             return
@@ -189,7 +227,7 @@ struct PuzzleView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.white)
                     }
-                    .shadow(color: noteMode && !selectedNotes.contains("\(i)") ? Color.white : Color.gray.opacity(0.5), radius: 5, x: 0, y: 0)
+                    .shadow(color: noteMode && !selectedNotes.contains("\(i)") || !noteMode && numLeft(num: i) == 0 ? Color.white : Color.gray.opacity(0.5), radius: 5, x: 0, y: 0)
                 }
             }
             .padding()

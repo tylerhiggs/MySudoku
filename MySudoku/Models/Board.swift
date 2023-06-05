@@ -7,6 +7,14 @@
 
 import Foundation
 
+extension Array {
+    func parallelForEach(_ body: (Element) -> Void) {
+        DispatchQueue.concurrentPerform(iterations: count) { i in
+            body(self[i])
+        }
+    }
+}
+
 struct Board: Codable {
     var grid: Array<Array<Int>>
     var candidates: Array<Array<String>>
@@ -179,10 +187,43 @@ struct Board: Codable {
     }
     
     /**
+     For use in parallelized `multiplePossibleSolutionsP` where the grid we are checking is self.grid
+     plus a `value` at row `i` and col `j`
+     */
+    func solutionExistsP(i: Int, j: Int, value: Int) -> Bool {
+        let timestamp = NSDate().timeIntervalSince1970
+        var gridCopy = Board.copyMatrix(mat: self.grid)
+        gridCopy[i][j] = value
+        var complete = false
+        complete = solutionExistsAt(gridCopy: &gridCopy, t: timestamp)
+        return complete
+    }
+
+    /**
+     Parallelized
+     */
+    func multiplePossibleSolutionsP() -> Bool {
+        var ret = false
+        Array(0..<81).parallelForEach { i in
+            let col = i % 9
+            let row = (i - col) / 9
+            for k in 0..<9 {
+                if self.solution[row][col] == k || !self.isSafe(i: row, j: col, n: k){
+                    continue
+                }
+                if solutionExistsP(i: row, j: col, value: k) {
+                    ret = true
+                }
+            }
+        }
+        return ret
+    }
+    
+    /**
      Needs to poke `n` more holes in `self.grid` recursively and should always complete
      in a reasonable amount of time. Return `true` if hole poking was recursively successful.
      */
-    mutating func pokeHolesD(n: Int) -> Bool {
+    mutating func pokeHolesD(n: Int, parallel: Bool = false) -> Bool {
         print("pokeHolesD(n: \(n))")
         if n == 0 {
             return true
@@ -198,9 +239,10 @@ struct Board: Codable {
             // try to poke hole
             self.grid[randRow][randCol] = 0
             // let noSolutionExists = !solutionExists(exampleGrid: self.grid) not need???
-            let severalPossibleSolutions = multiplePossibleSolutions()
+            let severalPossibleSolutions = parallel ? multiplePossibleSolutionsP() : multiplePossibleSolutions()
             if severalPossibleSolutions {
                 // we have created an invalid board reset
+                print("found multiple possible solutions")
                 self.grid[randRow][randCol] = self.solution[randRow][randCol]
                 continue
             }
@@ -227,9 +269,8 @@ struct Board: Codable {
             }
             
             self.grid[randRow][randCol] = 0
-            let noSolutionExists = !solutionExists(exampleGrid: self.grid)
             let severalPossibleSolutions = multiplePossibleSolutions()
-            if noSolutionExists || severalPossibleSolutions {
+            if severalPossibleSolutions {
                 self.grid[randRow][randCol] = self.solution[randRow][randCol]
                 stuckCount += 1
                 if stuckCount > stuckThreshold {

@@ -71,6 +71,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		575D5A3C2A2A903900A9BC22 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5794BBAF2A20191500037CE6 /* ModelData.swift */,
+				5794BBAD2A20086600037CE6 /* Board.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		5794BB912A1FE7A900037CE6 = {
 			isa = PBXGroup;
 			children = (
@@ -95,10 +104,9 @@
 				5794BB9D2A1FE7A900037CE6 /* MySudokuApp.swift */,
 				5794BBA12A1FE7AA00037CE6 /* Assets.xcassets */,
 				575D5A392A2A4CEB00A9BC22 /* MyColors.swift */,
-				5794BBAF2A20191500037CE6 /* ModelData.swift */,
+				575D5A3C2A2A903900A9BC22 /* Models */,
 				575D5A3B2A2A4E3500A9BC22 /* Views */,
 				5794BBAB2A2006CD00037CE6 /* BoardData.data */,
-				5794BBAD2A20086600037CE6 /* Board.swift */,
 				5794BBA32A1FE7AA00037CE6 /* Preview Content */,
 			);
 			path = MySudoku;

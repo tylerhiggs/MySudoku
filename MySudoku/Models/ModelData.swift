@@ -25,8 +25,7 @@ final class ModelData: ObservableObject {
             await load()
         }
     }
-    
-    @MainActor
+        
     func load() async {
         let task = Task {
             let fileURL = try Self.fileURL()

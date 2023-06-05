@@ -10,12 +10,10 @@ import SwiftUI
 struct ContentView: View {
     @State private var puzzling = false
     @State private var loading = false
+    @State private var menuOpen = false
     @EnvironmentObject var modelData: ModelData
     var body: some View {
-        if loading {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle())
-        } else if puzzling {
+        if puzzling && !loading {
             PuzzleView(puzzling: $puzzling)
                 .environmentObject(modelData)
         } else {
@@ -27,66 +25,8 @@ struct ContentView: View {
                 VStack {
                     Spacer()
                     VStack {
-                        Menu {
-                            Button {
-                                print("hard")
-                                loading.toggle()
-                                var newBoard = Board()
-                                newBoard.buildPuzzle(n: 52)
-                                modelData.board = newBoard
-                                Task {
-                                    do {
-                                        try await modelData.save()
-                                    } catch {
-                                        print("something went wrong saving data")
-                                    }
-
-                                }
-                                puzzling.toggle()
-                                loading.toggle()
-                            } label: {
-                                Text("Hard")
-                            }
-                            Button {
-                                print("medium")
-                                loading = true
-                                var newBoard = Board()
-                                newBoard.buildPuzzle(n: 47)
-                                modelData.board = newBoard
-                                Task {
-                                    do {
-                                        print("entering the task")
-                                        try await modelData.save()
-                                    } catch {
-                                        print("something went wrong saving data")
-                                    }
-
-                                }
-                                puzzling.toggle()
-                                loading = false
-                            } label: {
-                                Text("Medium")
-                            }
-                            Button {
-                                print("easy")
-                                loading = true
-                                var newBoard = Board()
-                                newBoard.buildPuzzle()
-                                modelData.board = newBoard
-                                Task {
-                                    do {
-                                        print("entering the task")
-                                        try await modelData.save()
-                                    } catch {
-                                        print("something went wrong saving data")
-                                    }
-
-                                }
-                                puzzling.toggle()
-                                loading = false
-                            } label: {
-                                Text("Easy")
-                            }
+                        Button {
+                            menuOpen = true
                         } label: {
                             Label("New Game", systemImage: "star.fill")
                                 .foregroundColor(.white)
@@ -95,6 +35,40 @@ struct ContentView: View {
                         }
                         .background(.teal)
                         .cornerRadius(10)
+                        .sheet(isPresented: $menuOpen) {
+                            ZStack {
+                                if loading {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle())
+                                }
+                                VStack {
+                                    Button {
+                                        Task {
+                                            await createPuzzle(num: 52)
+                                        }
+                                    } label: {
+                                        Text("Hard")
+                                    }
+                                    .disabled(loading)
+                                    Button {
+                                        Task {
+                                            await createPuzzle(num: 47)
+                                        }
+                                    } label: {
+                                        Text("Medium")
+                                    }
+                                    Button {
+                                        Task {
+                                            await createPuzzle()
+                                        }
+                                    } label: {
+                                        Text("Easy")
+                                    }
+                                }
+                                .presentationDetents([.medium])
+                                .opacity(loading ? 0: 1)
+                            }
+                        }
                     }
                     Button {
                         puzzling.toggle()
@@ -113,6 +87,27 @@ struct ContentView: View {
             }
             .padding()
         }
+    }
+    
+    private func createPuzzle(num: Int = 30) async {
+        loading = true
+        Task.detached {
+            do {
+                var newBoard = Board()
+                newBoard.buildPuzzle(n: num)
+                await MainActor.run { [newBoard] in
+                    self.modelData.board = newBoard
+                    self.loading = false
+                    puzzling.toggle()
+                    menuOpen = false
+                }
+                try await modelData.save()
+            } catch {
+                print("something went wrong saving data")
+            }
+            
+        }
+        
     }
 }
 
