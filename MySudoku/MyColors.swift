@@ -11,4 +11,6 @@ import SwiftUI
 struct MyColors {
     static let highlight = Color("Highlight")
     static let lightGray = Color("SelectedBackground")
+    static let darkLine = Color("DarkLine")
+    static let lightLine = Color("LightLine")
 }

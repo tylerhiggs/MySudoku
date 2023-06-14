@@ -45,18 +45,19 @@ struct PuzzleView: View {
             Grid(horizontalSpacing: 0, verticalSpacing: 0) {
                 ForEach(0..<9) { i in
                     if i % 3 == 0 {
-                        Divider().overlay(.black)
+                        Divider().overlay(MyColors.darkLine)
                     } else {
-                        Divider()
+                        Divider().overlay(MyColors.lightLine)
                     }
                     GridRow {
                         HStack(spacing: 0) {
                             ForEach(0..<9) { j in
                                 if j % 3 == 0 {
                                     Divider()
-                                        .overlay(.black)
+                                        .overlay(MyColors.darkLine)
                                 } else {
                                     Divider()
+                                        .overlay(MyColors.lightLine)
                                 }
                                     Button {
                                         selectedBox = Coord(i: i, j: j)
@@ -64,7 +65,7 @@ struct PuzzleView: View {
                                             if unified[i][j] != 0 {
                                                 Label("\(unified[i][j])", systemImage: "bolt.fill")
                                                     .labelStyle(.titleOnly)
-                                                    .foregroundColor(grid[i][j] != 0 ? .black : fills[i][j] == solution[i][j] ? .blue : .red)
+                                                    .foregroundColor(grid[i][j] != 0 ? MyColors.darkLine : fills[i][j] == solution[i][j] ? .blue : .red)
                                                     .font(.system(size: 30, design: .monospaced))
                                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                             } else {
@@ -93,13 +94,13 @@ struct PuzzleView: View {
                                         .aspectRatio(1, contentMode: .fit)
                             }
                             Divider()
-                                .overlay(.black)
+                                .overlay(MyColors.darkLine)
                         }
                     }
                     .frame(maxWidth: .infinity)
                 }
                 Divider()
-                    .overlay(.black)
+                    .overlay(MyColors.darkLine)
             }
             .aspectRatio(1, contentMode: .fit)
             .padding(4)
@@ -295,5 +296,6 @@ struct Puzzle_Previews: PreviewProvider {
     static var previews: some View {
         PuzzleView(puzzling: .constant(true))
             .environmentObject(ModelData())
+            .preferredColorScheme(.dark)
     }
 }

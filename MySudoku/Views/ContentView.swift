@@ -44,29 +44,53 @@ struct ContentView: View {
                                 VStack {
                                     Button {
                                         Task {
-                                            await createPuzzle(num: 52)
+                                            await createPuzzle()
                                         }
                                     } label: {
-                                        Text("Hard")
+                                        Text("Easy")
+                                            .frame(maxWidth: .infinity)
+                                            .padding(10)
+                                            .foregroundColor(.teal)
                                     }
-                                    .disabled(loading)
+                                    .frame(maxWidth: .infinity)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.teal, lineWidth: 1)
+                                    }
                                     Button {
                                         Task {
                                             await createPuzzle(num: 47)
                                         }
                                     } label: {
                                         Text("Medium")
+                                            .frame(maxWidth: .infinity)
+                                            .padding(10)
+                                            .foregroundColor(.teal)
+                                    }
+                                    .disabled(loading)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.teal, lineWidth: 1)
                                     }
                                     Button {
                                         Task {
-                                            await createPuzzle()
+                                            await createPuzzle(num: 52)
                                         }
                                     } label: {
-                                        Text("Easy")
+                                        Text("Hard")
+                                            .frame(maxWidth: .infinity)
+                                            .padding(10)
+                                            .foregroundColor(.teal)
+                                    }
+                                    .disabled(loading)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.teal, lineWidth: 1)
                                     }
                                 }
                                 .presentationDetents([.medium])
                                 .opacity(loading ? 0: 1)
+                                .padding()
                             }
                         }
                     }
@@ -89,7 +113,7 @@ struct ContentView: View {
         }
     }
     
-    private func createPuzzle(num: Int = 30) async {
+     private func createPuzzle(num: Int = 30) async {
         loading = true
         Task.detached {
             do {
