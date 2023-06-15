@@ -13,11 +13,20 @@ jobs:
   build:
 
     runs-on: macos-latest
+    strategy:
+      matrix:
+        destination: ['platform=iOS Simulator,OS=16.4,name=iPhone 14 Pro Max']
 
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: swift build
+      run: |
+          xcodebuild clean build -project MySudoku.xcodeproj -scheme MySudoku -destination "${destination}" CODE_SIGN_IDENTITY="com.thiggs" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      env: 
+         destination: ${{ matrix.destination }}
 
-    - name: Run tests
-      run: swift test
+    - name: Test
+      run: |
+          xcodebuild clean test -project MySudoku.xcodeproj -scheme MySudokuTests -destination "${destination}" CODE_SIGN_IDENTITY="com.thiggs" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+      env: 
+         destination: ${{ matrix.destination }}
