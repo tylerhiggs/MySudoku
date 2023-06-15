@@ -12,8 +12,8 @@ struct TimerView: View {
     var body: some View {
         Text("\(twoDidgitsOrMore(i: hours)) : \(twoDidgitsOrMore(i: minutes)) : \(twoDidgitsOrMore(i: seconds))")
             .font(.system(size: 16, design: .monospaced))
-            .onAppear(perform: modelData.startTimer)
-            .onDisappear(perform: modelData.stopTimer)
+            .onAppear(perform: {modelData.startTimer()})
+            .onDisappear(perform: {modelData.stopTimer()})
     }
     
     private var totalSeconds: Int {
