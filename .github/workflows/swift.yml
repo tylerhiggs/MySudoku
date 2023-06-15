@@ -24,9 +24,9 @@ jobs:
         swift-version: ${{ matrix.swift }}
     - name: Build
       run: |
-          xcodebuild test -project MySudoku.xcodeproj \
+          xcodebuild clean build -project MySudoku.xcodeproj \
           -scheme MySudoku \
-          -destination 'platform=iOS Simulator,OS=16.4,name=iPhone 14 Pro Max' \
+          -destination 'platform=iOS Simulator,OS=16.2,name=iPhone 14 Pro Max' \
           CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
 #       env: 
 #          destination: ${{ matrix.destination }}
