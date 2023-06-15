@@ -13,19 +13,11 @@ jobs:
   build:
 
     runs-on: macos-latest
-    strategy:
-        matrix:
-          destination: [platform=iOS, id="dvtdevice-DVTiPhonePlaceholder-iphoneos", name="Any iOS Device"]
 
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: |
-          xcodebuild clean build -project MySudoku.xcodeproj -scheme MySudoku -destination "${destination}" CODE_SIGN_IDENTITY="com.thiggs" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-      env: 
-         destination: ${{ matrix.destination }}
+      run: swift build
+
     - name: Run tests
-      run: |
-          xcodebuild clean test -project MySudoku.xcodeproj -scheme MySudokuTests -destination "${destination}" CODE_SIGN_IDENTITY="com.thiggs" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
-      env: 
-       destination: ${{ matrix.destination }}
+      run: swift test
