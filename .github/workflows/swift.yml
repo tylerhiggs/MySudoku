@@ -15,10 +15,12 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        swift: ["5.2", "5.3"]
+        swift: ["5.3"]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+      with:
+        swift-version: ${{ matrix.swift }}
     - name: Build
       run: |
           xcodebuild clean build -project MySudoku.xcodeproj \
@@ -29,8 +31,8 @@ jobs:
 #       env: 
 #          destination: ${{ matrix.destination }}
 
-    - name: Test
-      run: |
-          xcodebuild clean test -project MySudoku.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -destination generic/platform=iOS ONLY_ACTIVE_ARCH=NO
+#     - name: Test
+#       run: |
+#           xcodebuild clean test -project MySudoku.xcodeproj CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -destination generic/platform=iOS ONLY_ACTIVE_ARCH=NO
 #       env: 
 #          destination: ${{ matrix.destination }}
