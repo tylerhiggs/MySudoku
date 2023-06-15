@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        destination: ['platform=iOS Simulator,OS=16.4,name=iPhone 14 Pro Max']
+        destination: ['platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device']
 
     steps:
     - uses: actions/checkout@v3
