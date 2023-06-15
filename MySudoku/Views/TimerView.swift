@@ -11,6 +11,7 @@ struct TimerView: View {
     @EnvironmentObject var modelData: ModelData
     var body: some View {
         Text("\(twoDidgitsOrMore(i: hours)) : \(twoDidgitsOrMore(i: minutes)) : \(twoDidgitsOrMore(i: seconds))")
+            .font(.system(size: 16, design: .monospaced))
             .onAppear(perform: modelData.startTimer)
             .onDisappear(perform: modelData.stopTimer)
     }

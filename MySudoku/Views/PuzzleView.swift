@@ -76,10 +76,14 @@ struct PuzzleView: View {
                                                         GridRow {
                                                             ForEach(0..<3) { l in
                                                                 if candidates[i][j].contains("\(k * 3 + l + 1)") && modelData.board.isSafe(i: i, j: j, n: k * 3 + l + 1) {
-                                                                    Text("\(k * 3 + l + 1)")
-                                                                        .font(.system(size: 10))
-                                                                        .foregroundColor(.gray)
-                                                                        .background(selectedNum == k * 3 + l + 1 ? MyColors.highlight : nil)
+                                                                    ZStack {
+                                                                        if selectedNum == k * 3 + l + 1 {
+                                                                            MyColors.highlight
+                                                                        }
+                                                                        Text("\(k * 3 + l + 1)")
+                                                                            .font(.system(size: 10, design: .monospaced))
+                                                                            .foregroundColor(MyColors.lightLine)
+                                                                    }
                                                                 } else {
                                                                     Color.clear
                                                                 }
