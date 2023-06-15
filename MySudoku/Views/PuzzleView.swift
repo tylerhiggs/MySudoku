@@ -16,7 +16,6 @@ class Coord {
         self.row = i
         self.col = j
     }
-    
 }
 
 struct PuzzleView: View {
@@ -39,6 +38,9 @@ struct PuzzleView: View {
                             .font(.system(size: 24))
                     }
                     Spacer()
+                    TimerView()
+                        .environmentObject(modelData)
+                        .padding()
                 }
             }
             .frame(alignment: .topLeading)
@@ -106,6 +108,33 @@ struct PuzzleView: View {
             .padding(4)
             
             HStack {
+                Button {
+                    let _ = modelData.board.pop()
+                    Task {
+                        do {
+                            try await modelData.save()
+                        } catch {
+                            print("there was an issue saving hint")
+                        }
+                    }
+                } label: {
+                    VStack {
+                        Image(systemName: "arrow.uturn.backward")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 28))
+                            .padding([.vertical], 1)
+                            .padding([.top], 4)
+                            .frame(height: 44)
+                        Text("Undo")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 12))
+                            .padding([.bottom], 8)
+                            .padding([.horizontal], 4)
+                    }
+                    .cornerRadius(10)
+                    .disabled(modelData.board.peek() == nil)
+
+                }
                 Button {
                     noteMode.toggle()
                 } label: {
@@ -175,14 +204,14 @@ struct PuzzleView: View {
                         if noteMode {
                             let prevNotes = candidates[safeSelectedBox.row][safeSelectedBox.col]
                             if prevNotes.contains("\(i)") {
-                                modelData.board.candidates[safeSelectedBox.row][safeSelectedBox.col] = prevNotes.filter {"\($0)" != "\(i)"}
+                                modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isNote: true))
                             } else {
                                 if !modelData.board.isSafe(i: safeSelectedBox.row, j: safeSelectedBox.col, n: i) {
                                     let impact = UIImpactFeedbackGenerator(style: .rigid)
                                     impact.impactOccurred()
                                     return
                                 }
-                                modelData.board.candidates[safeSelectedBox.row][safeSelectedBox.col] = prevNotes + "\(i)"
+                                modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isNote: true))
                             }
                             Task {
                                 do {
@@ -194,7 +223,7 @@ struct PuzzleView: View {
                             }
                             return
                         }
-                        modelData.board.fills[safeSelectedBox.row][safeSelectedBox.col] = fills[safeSelectedBox.row][safeSelectedBox.col] == i ? 0 : i
+                        modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i))
                         Task {
                             do {
                                 try await modelData.save()

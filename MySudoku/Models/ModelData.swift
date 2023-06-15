@@ -11,6 +11,28 @@ import Combine
 @MainActor
 final class ModelData: ObservableObject {
     @Published var board: Board = Board()
+    var timer = Timer()
+    
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
+            Task {
+                await MainActor.run {
+                    self.board.progressTime += 1
+                }
+                if await self.board.progressTime % 10 == 0 {
+                    do {
+                        try await self.save()
+                    } catch {
+                        print("problem saving time")
+                    }
+                }
+            }
+        }
+    }
+    
+    func stopTimer() {
+        timer.invalidate()
+    }
     
     private static func fileURL() throws -> URL {
         try FileManager.default.url(for: .documentDirectory,

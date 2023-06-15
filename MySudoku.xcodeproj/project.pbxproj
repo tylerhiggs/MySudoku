@@ -17,6 +17,8 @@
 		5794BBB02A20191500037CE6 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBAF2A20191500037CE6 /* ModelData.swift */; };
 		5794BBBD2A2684AC00037CE6 /* BoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBBC2A2684AC00037CE6 /* BoardTests.swift */; };
 		5794BBC42A26A3CF00037CE6 /* PuzzleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */; };
+		57A5205D2A3A2F9900DDB47A /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A5205C2A3A2F9900DDB47A /* Move.swift */; };
+		57A5205F2A3B4DB700DDB47A /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A5205E2A3B4DB700DDB47A /* TimerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		5794BBBA2A2684AC00037CE6 /* MySudokuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MySudokuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5794BBBC2A2684AC00037CE6 /* BoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTests.swift; sourceTree = "<group>"; };
 		5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleView.swift; sourceTree = "<group>"; };
+		57A5205C2A3A2F9900DDB47A /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		57A5205E2A3B4DB700DDB47A /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,7 @@
 			children = (
 				5794BB9F2A1FE7A900037CE6 /* ContentView.swift */,
 				5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */,
+				57A5205E2A3B4DB700DDB47A /* TimerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -75,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				5794BBAF2A20191500037CE6 /* ModelData.swift */,
+				57A5205C2A3A2F9900DDB47A /* Move.swift */,
 				5794BBAD2A20086600037CE6 /* Board.swift */,
 			);
 			path = Models;
@@ -229,11 +235,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57A5205D2A3A2F9900DDB47A /* Move.swift in Sources */,
 				5794BBC42A26A3CF00037CE6 /* PuzzleView.swift in Sources */,
 				575D5A3A2A2A4CEB00A9BC22 /* MyColors.swift in Sources */,
 				5794BBA02A1FE7A900037CE6 /* ContentView.swift in Sources */,
 				5794BBB02A20191500037CE6 /* ModelData.swift in Sources */,
 				5794BB9E2A1FE7A900037CE6 /* MySudokuApp.swift in Sources */,
+				57A5205F2A3B4DB700DDB47A /* TimerView.swift in Sources */,
 				5794BBAE2A20086600037CE6 /* Board.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

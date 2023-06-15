@@ -21,6 +21,10 @@ struct Board: Codable {
     var fills: Array<Array<Int>>
     var solution: Array<Array<Int>>
     
+    var progressTime: Int = 0
+    
+    var moveStack: Array<Move> = []
+    
     init() {
         self.grid = [Array](repeating: [Int](repeating: 0, count: 9), count: 9)
         self.candidates = [Array](repeating: [String](repeating: "", count: 9), count: 9)
@@ -31,6 +35,37 @@ struct Board: Codable {
     mutating func buildPuzzle(n: Int = 30) {
         self.fillPuzzle()
         let _ = self.pokeHolesD(n: n)
+    }
+    
+    mutating func push(_ move: Move) {
+        self.executeMove(move)
+        self.moveStack.append(move)
+    }
+    
+    @discardableResult
+    mutating func pop() -> Move? {
+        if self.moveStack.isEmpty { return nil }
+        
+        let lastMove = self.moveStack.popLast()!
+        self.executeMove(lastMove)
+        return lastMove
+    }
+    
+    func peek() -> Move? {
+        return self.moveStack.last
+    }
+    
+    /**
+     Executes move without adding it to the `moveStack`
+     */
+    private mutating func executeMove(_ move: Move) {
+        if move.isNote {
+            let prevCandidates = self.candidates[move.row][move.col]
+            let proposedCandidate = "\(move.num)"
+            self.candidates[move.row][move.col] = prevCandidates.contains(proposedCandidate) ? prevCandidates.filter { "\($0)" != proposedCandidate } : prevCandidates + proposedCandidate
+        } else {
+            self.fills[move.row][move.col] = self.fills[move.row][move.col] == 0 ? move.num : 0
+        }
     }
     
     func rowSafe(i: Int, n: Int) -> Bool {
