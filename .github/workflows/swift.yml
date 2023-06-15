@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        destination: ['platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device']
+        swift: ["5.2", "5.3"]
 
     steps:
     - uses: actions/checkout@v3
