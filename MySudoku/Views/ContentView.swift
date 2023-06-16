@@ -114,6 +114,7 @@ struct ContentView: View {
     }
     
      private func createPuzzle(num: Int = 30) async {
+         print("creating puzzle")
         loading = true
         Task.detached {
             do {

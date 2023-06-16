@@ -67,7 +67,7 @@ struct PuzzleView: View {
                                             if unified[i][j] != 0 {
                                                 Label("\(unified[i][j])", systemImage: "bolt.fill")
                                                     .labelStyle(.titleOnly)
-                                                    .foregroundColor(grid[i][j] != 0 ? MyColors.darkLine : fills[i][j] == solution[i][j] ? .blue : .red)
+                                                    .foregroundColor(numberColor(i, j))
                                                     .font(.system(size: 30, design: .monospaced))
                                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                                             } else {
@@ -75,7 +75,7 @@ struct PuzzleView: View {
                                                     ForEach(0..<3) { k in
                                                         GridRow {
                                                             ForEach(0..<3) { l in
-                                                                if candidates[i][j].contains("\(k * 3 + l + 1)") && modelData.board.isSafe(i: i, j: j, n: k * 3 + l + 1) {
+                                                                if showCandidate(i, j, k, l) {
                                                                     ZStack {
                                                                         if selectedNum == k * 3 + l + 1 {
                                                                             MyColors.highlight
@@ -96,7 +96,7 @@ struct PuzzleView: View {
                                             }
                                         }
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        .background(grid[i][j] == selectedNum || fills[i][j] == selectedNum || isHighlightBox(i: i, j: j) ? MyColors.highlight : nil)
+                                        .background(boxBackground(i, j))
                                         .aspectRatio(1, contentMode: .fit)
                             }
                             Divider()
@@ -155,7 +155,7 @@ struct PuzzleView: View {
                             .padding([.bottom], 8)
                             .padding([.horizontal], 4)
                     }
-                    .background(noteMode ? Color("SelectedBackground") : nil)
+                    .background(noteMode ? MyColors.lightGray : nil)
                     .cornerRadius(10)
 
                 }
@@ -208,14 +208,16 @@ struct PuzzleView: View {
                         if noteMode {
                             let prevNotes = candidates[safeSelectedBox.row][safeSelectedBox.col]
                             if prevNotes.contains("\(i)") {
-                                modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isNote: true))
+                                let newMove = Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isNote: true)
+                                modelData.board.push(newMove)
                             } else {
                                 if !modelData.board.isSafe(i: safeSelectedBox.row, j: safeSelectedBox.col, n: i) {
                                     let impact = UIImpactFeedbackGenerator(style: .rigid)
                                     impact.impactOccurred()
                                     return
                                 }
-                                modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isNote: true))
+                                let newMove = Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isNote: true)
+                                modelData.board.push(newMove)
                             }
                             Task {
                                 do {
@@ -243,7 +245,7 @@ struct PuzzleView: View {
                                 Text("\(i)")
                                     .padding([.horizontal], 9)
                                     .foregroundColor(selectedNotes.contains("\(i)") ? .black : MyColors.lightGray)
-                                .font(.system(size: 30))
+                                    .font(.system(size: 30))
                                 Text("\(numLeft(num: i))")
                                     .foregroundColor(selectedNotes.contains("\(i)") ? .black : MyColors.lightGray)
                             } else {
@@ -322,6 +324,18 @@ struct PuzzleView: View {
             return false
         }
         return unified[i][j] == 0 && selectedBox != nil && safeSelectedBox.col == j && safeSelectedBox.row == i
+    }
+    
+    private func numberColor(_ i: Int, _ j: Int) -> Color {
+        grid[i][j] != 0 ? MyColors.darkLine : fills[i][j] == solution[i][j] ? .blue : .red
+    }
+    
+    private func showCandidate(_ i: Int, _ j: Int, _ k: Int, _ l: Int) -> Bool {
+        candidates[i][j].contains("\(k * 3 + l + 1)") && modelData.board.isSafe(i: i, j: j, n: k * 3 + l + 1)
+    }
+    
+    private func boxBackground(_ i: Int, _ j: Int) -> Color? {
+        unified[i][j] == selectedNum || isHighlightBox(i: i, j: j) ? MyColors.highlight : nil
     }
 }
 
