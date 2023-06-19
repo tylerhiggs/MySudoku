@@ -20,6 +20,7 @@ struct Board: Codable {
     var candidates: Array<Array<String>>
     var fills: Array<Array<Int>>
     var solution: Array<Array<Int>>
+    var forceChainAttempt: Array<Array<Int>>
     
     var progressTime: Int = 0
     
@@ -30,11 +31,12 @@ struct Board: Codable {
         self.candidates = [Array](repeating: [String](repeating: "", count: 9), count: 9)
         self.fills = [Array](repeating: [Int](repeating: 0, count: 9), count: 9)
         self.solution = [Array](repeating: [Int](repeating: 0, count: 9), count: 9)
+        self.forceChainAttempt = [Array](repeating: [Int](repeating: 0, count: 9), count: 9)
     }
     
-    mutating func buildPuzzle(n: Int = 30) {
+    mutating func buildPuzzle(n: Int = 30, parallel: Bool = true) async {
         self.fillPuzzle()
-        let _ = self.pokeHolesD(n: n)
+        let _ = await self.pokeHolesD(n: n, parallel: parallel)
     }
     
     mutating func push(_ move: Move) {
@@ -63,6 +65,8 @@ struct Board: Codable {
             let prevCandidates = self.candidates[move.row][move.col]
             let proposedCandidate = "\(move.num)"
             self.candidates[move.row][move.col] = prevCandidates.contains(proposedCandidate) ? prevCandidates.filter { "\($0)" != proposedCandidate } : prevCandidates + proposedCandidate
+        } else if move.isForceChain{
+            self.forceChainAttempt[move.row][move.col] = self.forceChainAttempt[move.row][move.col] == 0 ? move.num : 0
         } else {
             self.fills[move.row][move.col] = self.fills[move.row][move.col] == 0 ? move.num : 0
         }
@@ -163,7 +167,7 @@ struct Board: Codable {
         while !complete {
             complete = fillAt(t: timestamp)
         }
-        self.grid = Board.copyMatrix(mat: self.solution) // TODO: delete
+//        self.grid = Board.copyMatrix(mat: self.solution) // TODO: delete
     }
     
     func solutionExistsAt( gridCopy: inout Array<Array<Int>>, i: Int = 0, j: Int = 0, t: TimeInterval) -> Bool {
@@ -239,15 +243,17 @@ struct Board: Codable {
      */
     func multiplePossibleSolutionsP() -> Bool {
         var ret = false
-        Array(0..<81).parallelForEach { i in
-            let col = i % 9
-            let row = (i - col) / 9
-            for k in 0..<9 {
-                if self.solution[row][col] == k || !self.isSafe(i: row, j: col, n: k){
-                    continue
-                }
-                if solutionExistsP(i: row, j: col, value: k) {
-                    ret = true
+        Array(0..<9).parallelForEach { row in
+            for col in 0..<9 {
+                if self.grid[row][col] == 0 {
+                    for k in 1...9 {
+                        if self.solution[row][col] == k || !self.isSafe(i: row, j: col, n: k){
+                            continue
+                        }
+                        if solutionExistsP(i: row, j: col, value: k) {
+                            ret = true
+                        }
+                    }
                 }
             }
         }
@@ -255,10 +261,43 @@ struct Board: Codable {
     }
     
     /**
+     Parallelized
+     */
+    func multiplePossibleSolutionsPTaskGroup() async -> Bool {
+        let result: Bool = await withTaskGroup(of: Bool.self) { group in
+            for row in 0..<9 {
+                group.addTask {
+                    for col in 0..<9 {
+                        if self.grid[row][col] == 0 {
+                            for k in 1...9 {
+                                if self.solution[row][col] == k || !self.isSafe(i: row, j: col, n: k){
+                                    continue
+                                }
+                                if solutionExistsP(i: row, j: col, value: k) {
+                                    return true
+                                }
+                            }
+                        }
+                    }
+                    return false
+                }
+            }
+            for await v in group {
+                if v {
+                    let ret: Bool = v
+                    return ret
+                }
+            }
+            return false
+        }
+        return result
+    }
+    
+    /**
      Needs to poke `n` more holes in `self.grid` recursively and should always complete
      in a reasonable amount of time. Return `true` if hole poking was recursively successful.
      */
-    mutating func pokeHolesD(n: Int, parallel: Bool = false) -> Bool {
+    mutating func pokeHolesD(n: Int, parallel: Bool) async -> Bool {
         print("pokeHolesD(n: \(n))")
         if n == 0 {
             return true
@@ -274,14 +313,14 @@ struct Board: Codable {
             // try to poke hole
             self.grid[randRow][randCol] = 0
             // let noSolutionExists = !solutionExists(exampleGrid: self.grid) not need???
-            let severalPossibleSolutions = parallel ? multiplePossibleSolutionsP() : multiplePossibleSolutions()
+            let severalPossibleSolutions = parallel ? await multiplePossibleSolutionsPTaskGroup() : multiplePossibleSolutions()
             if severalPossibleSolutions {
                 // we have created an invalid board reset
                 print("found multiple possible solutions")
                 self.grid[randRow][randCol] = self.solution[randRow][randCol]
                 continue
             }
-            if pokeHolesD(n: n - 1) {
+            if await pokeHolesD(n: n - 1, parallel: parallel) {
                 return true
             }
             self.grid[randRow][randCol] = self.solution[randRow][randCol]

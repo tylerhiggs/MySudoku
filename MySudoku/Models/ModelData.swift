@@ -53,7 +53,7 @@ final class ModelData: ObservableObject {
             let fileURL = try Self.fileURL()
             guard let data = try? Data(contentsOf: fileURL) else {
                 var b = Board()
-                b.buildPuzzle()
+                await b.buildPuzzle()
                 return b
             }
             let b = try JSONDecoder().decode(Board.self, from: data)
@@ -68,7 +68,7 @@ final class ModelData: ObservableObject {
         } catch {
             print("there was an error")
             var b = Board()
-            b.buildPuzzle()
+            await b.buildPuzzle()
             self.board = b
         }
         
@@ -86,26 +86,3 @@ final class ModelData: ObservableObject {
     
     
 }
-
-//func load<T: Decodable>(_ filename: String) -> T {
-//    let data: Data
-//
-//    guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-//    else {
-//        fatalError("Couldn't find \(filename) in main bundle.")
-//    }
-//
-//    do {
-//        data = try Data(contentsOf: file)
-//    } catch {
-//        fatalError("Couldn't load \(filename) from main bundle:\n\(error)")
-//    }
-//
-//    do {
-//        let decoder = JSONDecoder()
-//        return try decoder.decode(T.self, from: data)
-//    } catch {
-//        print("unable to parse:(")
-//        fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
-//    }
-//}

@@ -54,11 +54,11 @@ final class BoardTests: XCTestCase {
         print(solved.solution)
     }
     
-    func testPokeHoles() throws {
+    func testPokeHoles() async throws {
         var puzzle = Board()
         puzzle.fillPuzzle()
-        let n = 35
-        let res = puzzle.pokeHolesD(n: n)
+        let n = 52
+        let res = await puzzle.pokeHolesD(n: n, parallel: true)
         XCTAssert(res, "Response should be truthy")
         XCTAssert(puzzle.solutionExists(exampleGrid: puzzle.grid))
         var count = 0

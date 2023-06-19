@@ -23,6 +23,7 @@ struct PuzzleView: View {
     @EnvironmentObject var modelData: ModelData
     @Binding var puzzling: Bool
     @State private var noteMode = false
+    @State private var forceChainMode = false
     @State private var selectedBox: Coord? = nil
     
     var body: some View {
@@ -112,6 +113,63 @@ struct PuzzleView: View {
             .padding(4)
             
             HStack {
+                Button {
+                    modelData.board.candidates = [Array](repeating: [String](repeating: "123456789", count: 9), count: 9)
+                    Task {
+                        do {
+                            try await modelData.save()
+                        } catch {
+                            print("there was an issue with auto saving notes")
+                        }
+                    }
+                } label: {
+                    VStack {
+                        Image(systemName: "pencil.and.outline")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 28))
+                            .padding([.vertical], 1)
+                            .padding([.top], 4)
+                            .frame(height: 44)
+                        Text("Autofill")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 12))
+                            .padding([.horizontal], 4)
+                        Text("Notes")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 12))
+                            .padding([.bottom], 8)
+                            .padding([.horizontal], 4)
+                    }
+                    .cornerRadius(10)
+                    .disabled(modelData.board.peek() == nil)
+
+                }
+                
+                Button {
+                    forceChainMode.toggle()
+                } label: {
+                    VStack {
+                        Image(systemName: "link")
+                            .foregroundColor(forceChainMode ? .green : .gray)
+                            .font(.system(size: 28))
+                            .padding([.vertical], 1)
+                            .padding([.top], 4)
+                            .frame(height: 44)
+                        Text("Force")
+                            .foregroundColor(forceChainMode ? .green : .gray)
+                            .font(.system(size: 12))
+                            .padding([.horizontal], 4)
+                        Text("Chain")
+                            .foregroundColor(forceChainMode ? .green : .gray)
+                            .font(.system(size: 12))
+                            .padding([.bottom], 8)
+                            .padding([.horizontal], 4)
+                    }
+                    .cornerRadius(10)
+                    .disabled(modelData.board.peek() == nil)
+
+                }
+                
                 Button {
                     let _ = modelData.board.pop()
                     Task {
@@ -229,7 +287,7 @@ struct PuzzleView: View {
                             }
                             return
                         }
-                        modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i))
+                        modelData.board.push(Move(row: safeSelectedBox.row, col: safeSelectedBox.col, num: i, isForceChain: forceChainMode))
                         Task {
                             do {
                                 try await modelData.save()
@@ -261,7 +319,7 @@ struct PuzzleView: View {
                     .cornerRadius(8)
                     .background {
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.white)
+                            .fill(Color.white.opacity(0.7))
                     }
                     .shadow(color: noteMode && !selectedNotes.contains("\(i)") || !noteMode && numLeft(num: i) == 0 ? Color.white : Color.gray.opacity(0.5), radius: 5, x: 0, y: 0)
                 }
@@ -291,10 +349,14 @@ struct PuzzleView: View {
         modelData.board.solution
     }
     
+    private var forceChainAttempt: Array<Array<Int>> {
+        modelData.board.forceChainAttempt
+    }
+    
     private var unified: Array<Array<Int>> {
         grid.enumerated().map {(i: Int, row: Array<Int>) in
             row.enumerated().map {(j: Int, num: Int) in
-                num != 0 ? num : fills[i][j]
+                num != 0 ? num : fills[i][j] != 0 || !forceChainMode ? fills[i][j] : forceChainAttempt[i][j]
             }
         }
     }
@@ -308,7 +370,7 @@ struct PuzzleView: View {
             return -1
         }
         let (i, j) = (selectedBox!.row, selectedBox!.col)
-        return grid[i][j] != 0 ? grid[i][j] : fills[i][j] != 0 ? fills[i][j] : -1
+        return unified[i][j] != 0 ? unified[i][j] : -1
     }
     
     private var selectedNotes: String {
@@ -316,7 +378,13 @@ struct PuzzleView: View {
             return ""
         }
         let (i, j) = (selectedBox!.row, selectedBox!.col)
-        return unified[i][j] == 0 ? candidates[i][j] : ""
+        return unified[i][j] == 0 ? candidates[i][j].filter {
+            guard let safeNum = Int("\($0)") else {
+                return false
+            }
+            return modelData.board.isSafe(i: i, j: j, n: safeNum)
+            
+        } : ""
     }
     
     private func isHighlightBox(i: Int, j: Int) -> Bool {
@@ -327,7 +395,13 @@ struct PuzzleView: View {
     }
     
     private func numberColor(_ i: Int, _ j: Int) -> Color {
-        grid[i][j] != 0 ? MyColors.darkLine : fills[i][j] == solution[i][j] ? .blue : .red
+        if grid[i][j] != 0 {
+            return MyColors.darkLine
+        } else if fills[i][j] != 0 {
+            return fills[i][j] != solution[i][j] ? Color.red : Color.blue
+        } else {
+            return Color.green
+        }
     }
     
     private func showCandidate(_ i: Int, _ j: Int, _ k: Int, _ l: Int) -> Bool {

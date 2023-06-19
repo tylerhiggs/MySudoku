@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5717BF682A3E2FEC003437DD /* ExperimentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5717BF672A3E2FEC003437DD /* ExperimentStore.swift */; };
 		575D5A3A2A2A4CEB00A9BC22 /* MyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 575D5A392A2A4CEB00A9BC22 /* MyColors.swift */; };
+		5772A57E2A3E274A00440157 /* ExperimentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5772A57D2A3E274A00440157 /* ExperimentView.swift */; };
 		5794BB9E2A1FE7A900037CE6 /* MySudokuApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BB9D2A1FE7A900037CE6 /* MySudokuApp.swift */; };
 		5794BBA02A1FE7A900037CE6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5794BB9F2A1FE7A900037CE6 /* ContentView.swift */; };
 		5794BBA22A1FE7AA00037CE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5794BBA12A1FE7AA00037CE6 /* Assets.xcassets */; };
@@ -32,7 +34,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5717BF672A3E2FEC003437DD /* ExperimentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentStore.swift; sourceTree = "<group>"; };
 		575D5A392A2A4CEB00A9BC22 /* MyColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyColors.swift; sourceTree = "<group>"; };
+		5772A57D2A3E274A00440157 /* ExperimentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentView.swift; sourceTree = "<group>"; };
 		5794BB9A2A1FE7A900037CE6 /* MySudoku.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MySudoku.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5794BB9D2A1FE7A900037CE6 /* MySudokuApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySudokuApp.swift; sourceTree = "<group>"; };
 		5794BB9F2A1FE7A900037CE6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +76,7 @@
 				5794BB9F2A1FE7A900037CE6 /* ContentView.swift */,
 				5794BBC32A26A3CF00037CE6 /* PuzzleView.swift */,
 				57A5205E2A3B4DB700DDB47A /* TimerView.swift */,
+				5772A57D2A3E274A00440157 /* ExperimentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -82,6 +87,7 @@
 				5794BBAF2A20191500037CE6 /* ModelData.swift */,
 				57A5205C2A3A2F9900DDB47A /* Move.swift */,
 				5794BBAD2A20086600037CE6 /* Board.swift */,
+				5717BF672A3E2FEC003437DD /* ExperimentStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -235,11 +241,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5772A57E2A3E274A00440157 /* ExperimentView.swift in Sources */,
 				57A5205D2A3A2F9900DDB47A /* Move.swift in Sources */,
 				5794BBC42A26A3CF00037CE6 /* PuzzleView.swift in Sources */,
 				575D5A3A2A2A4CEB00A9BC22 /* MyColors.swift in Sources */,
 				5794BBA02A1FE7A900037CE6 /* ContentView.swift in Sources */,
 				5794BBB02A20191500037CE6 /* ModelData.swift in Sources */,
+				5717BF682A3E2FEC003437DD /* ExperimentStore.swift in Sources */,
 				5794BB9E2A1FE7A900037CE6 /* MySudokuApp.swift in Sources */,
 				57A5205F2A3B4DB700DDB47A /* TimerView.swift in Sources */,
 				5794BBAE2A20086600037CE6 /* Board.swift in Sources */,

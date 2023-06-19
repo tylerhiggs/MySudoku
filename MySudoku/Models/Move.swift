@@ -12,12 +12,14 @@ struct Move: Codable {
     var col: Int
     var isNote: Bool
     var num: Int
+    var isForceChain: Bool
     
-    init(row i: Int, col j: Int, num n: Int, isNote note: Bool = false) {
+    init(row i: Int, col j: Int, num n: Int, isNote note: Bool = false, isForceChain fc: Bool = false ) {
         self.row = i
         self.col = j
         self.isNote = note
         self.num = n
+        self.isForceChain = fc
     }
 }
 
